@@ -380,5 +380,3 @@ def update_email():
 
     return render_template('update_email.html', message=message)
 
-if __name__ == '__main__':
-    app.run(debug=True)
