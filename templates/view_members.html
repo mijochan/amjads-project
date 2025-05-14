@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>قائمة الأعضاء</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      text-align: center;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 350px;
+      height: auto;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    /* زرّي الراديو */
+    .view-toggle {
+      margin-bottom: 20px;
+    }
+    .view-toggle input {
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    .view-toggle label {
+      margin: 0 15px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #009999;
+    }
+
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 95%;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 15px;
+      border: 1px solid #ddd;
+      text-align: center;
+      white-space: nowrap;
+    }
+    th {
+      background-color: #009999;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    button {
+      padding: 6px 12px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .no-print {
+      margin-top: 20px;
+    }
+    .edit-btn { background-color: green; color: white; }
+    .delete-btn { background-color: #e60000; color: white; }
+    .save-btn { background-color: green; color: white; }
+    .cancel-btn { background-color: red; color: white; }
+    input.edit-input {
+      width: 100px;
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    @media print {
+      input[type="checkbox"], .no-print { display: none !important; }
+      .checkbox-col::before { content: "رقم"; }
+      td[data-print-number]::before { content: attr(data-print-number); }
+    }
+    .filter-icon {
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+  color: white;
+}
+
+.filter-dropdown {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px;
+  z-index: 100;
+  text-align: right;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.filter-dropdown input {
+  width: 160px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sort-toggle {
+  cursor: pointer;
+  font-size: 18px;
+  color: #009999;
+  user-select: none;
+}
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار الموقع">
+  </div>
+  <h2>قائمة أعضاء وزارة الموارد البشرية والتنمية الاجتماعية</h2>
+<!-- زرّي التبديل -->
+  <div class="view-toggle">
+    <input type="radio" id="showEmployees" name="view" checked onclick="toggleView('employees')">
+    <label for="showEmployees">استعراض الموظفين</label>
+    <input type="radio" id="showInterns" name="view" onclick="toggleView('interns')">
+    <label for="showInterns">استعراض المتدربين</label>
+  </div>
+
+<!-- جدول الموظفين -->
+  <div id="employeesTableWrapper">
+    <table id="employeesTable">
+      <thead>
+  <tr>
+          <th class="checkbox-col"><input type="checkbox" class="selectAllCheckbox"></th>
+          <th>
+            الاسم
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 1)">▼</span>
+            <div class="filter-dropdown" data-column="1">
+              <span class="sort-toggle" onclick="toggleSort(1, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 1)">
+            </div>
+          </th>
+          <th>
+            اسم المستخدم
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 2)">▼</span>
+            <div class="filter-dropdown" data-column="2">
+              <span class="sort-toggle" onclick="toggleSort(2, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 2)">
+            </div>
+          </th>
+          <th>
+            السجل المدني
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 3)">▼</span>
+            <div class="filter-dropdown" data-column="3">
+              <span class="sort-toggle" onclick="toggleSort(3, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 3)">
+            </div>
+          </th>
+          <th>
+            رقم الجوال
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 4)">▼</span>
+            <div class="filter-dropdown" data-column="4">
+              <span class="sort-toggle" onclick="toggleSort(4, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 4)">
+            </div>
+          </th>
+          <th>
+            البريد الإلكتروني
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 5)">▼</span>
+            <div class="filter-dropdown" data-column="5">
+              <span class="sort-toggle" onclick="toggleSort(5, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 5)">
+            </div>
+          </th>
+          <th>
+            التخصص
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 6)">▼</span>
+            <div class="filter-dropdown" data-column="6">
+              <span class="sort-toggle" onclick="toggleSort(6, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 6)">
+            </div>
+          </th>
+          <th>
+            تاريخ المباشرة
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 7)">▼</span>
+            <div class="filter-dropdown" data-column="7">
+              <span class="sort-toggle" onclick="toggleSort(7, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 7)">
+            </div>
+          </th>
+          <th>
+            ملاحظات
+            <span class="filter-icon" onclick="toggleFilterMenu(event, 8)">▼</span>
+            <div class="filter-dropdown" data-column="8">
+              <span class="sort-toggle" onclick="toggleSort(8, this)">⇅</span>
+              <input type="text" placeholder="بحث..." onkeyup="filterColumn(this, 8)">
+            </div>
+          </th>
+          <th class="no-print">الإجراء</th>
+        </tr>
+</thead>
+    <tbody>
+        {% for member in members if member.role == 'موظف' %}
+        <tr data-id="{{ member['id'] }}">
+          <td><input type="checkbox" class="member-checkbox"></td>
+          <td><span class="cell-value">{{ member['name'] }}</span></td>
+          <td><span class="cell-value">{{ member['username'] }}</span></td>
+          <td><span class="cell-value">{{ member['national_id'] }}</span></td>
+          <td><span class="cell-value">{{ member['phone'] }}</span></td>
+          <td><span class="cell-value">{{ member['email'] }}</span></td>
+          <td><span class="cell-value">{{ member['specialty'] }}</span></td>
+          <td><span class="cell-value">{{ member['start_date'] }}</span></td>
+          <td><span class="cell-value">{{ member.notes }}</span></td>
+          <td class="no-print">
+            {% if session['permission'] == 'أدمن' or session['permission'] == 'تعديل' %}
+              <button class="edit-btn" onclick="enableEdit(this)">تعديل</button>
+            {% endif %}
+            {% if session['permission'] == 'أدمن' or session['permission'] == 'حذف' %}
+              <button class="delete-btn" onclick="deleteRow(this)">حذف</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- جدول المتدربين -->
+  <div id="internsTableWrapper" style="display:none;">
+    <table id="internsTable">
+      <thead>
+  <tr>
+      <th class="checkbox-col"><input type="checkbox" class="selectAllCheckbox"></th>
+      <th>الاسم <span class="filter-icon" onclick="toggleFilterMenu(event, 1)">▼</span>
+        <div class="filter-dropdown" data-column="1"><span class="sort-toggle" onclick="toggleSort(1, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 1)" placeholder="بحث..."></div>
+      </th>
+      <th>اسم المستخدم <span class="filter-icon" onclick="toggleFilterMenu(event, 2)">▼</span>
+        <div class="filter-dropdown" data-column="2"><span class="sort-toggle" onclick="toggleSort(2, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 2)" placeholder="بحث..."></div>
+      </th>
+      <th>السجل المدني <span class="filter-icon" onclick="toggleFilterMenu(event, 3)">▼</span>
+        <div class="filter-dropdown" data-column="3"><span class="sort-toggle" onclick="toggleSort(3, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 3)" placeholder="بحث..."></div>
+      </th>
+      <th>رقم الجوال <span class="filter-icon" onclick="toggleFilterMenu(event, 4)">▼</span>
+        <div class="filter-dropdown" data-column="4"><span class="sort-toggle" onclick="toggleSort(4, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 4)" placeholder="بحث..."></div>
+      </th>
+      <th>البريد الإلكتروني <span class="filter-icon" onclick="toggleFilterMenu(event, 5)">▼</span>
+        <div class="filter-dropdown" data-column="5"><span class="sort-toggle" onclick="toggleSort(5, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 5)" placeholder="بحث..."></div>
+      </th>
+      <th>التخصص <span class="filter-icon" onclick="toggleFilterMenu(event, 6)">▼</span>
+        <div class="filter-dropdown" data-column="6"><span class="sort-toggle" onclick="toggleSort(6, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 6)" placeholder="بحث..."></div>
+      </th>
+      <th>الجامعة / المعهد <span class="filter-icon" onclick="toggleFilterMenu(event, 7)">▼</span>
+        <div class="filter-dropdown" data-column="7"><span class="sort-toggle" onclick="toggleSort(7, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 7)" placeholder="بحث..."></div>
+      </th>
+      <th>تاريخ البداية <span class="filter-icon" onclick="toggleFilterMenu(event, 8)">▼</span>
+        <div class="filter-dropdown" data-column="8"><span class="sort-toggle" onclick="toggleSort(8, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 8)" placeholder="بحث..."></div>
+      </th>
+      <th>تاريخ النهاية <span class="filter-icon" onclick="toggleFilterMenu(event, 9)">▼</span>
+        <div class="filter-dropdown" data-column="9"><span class="sort-toggle" onclick="toggleSort(9, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 9)" placeholder="بحث..."></div>
+      </th>
+      <th>عدد أيام التدريب <span class="filter-icon" onclick="toggleFilterMenu(event, 10)">▼</span>
+        <div class="filter-dropdown" data-column="10"><span class="sort-toggle" onclick="toggleSort(10, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 10)" placeholder="بحث..."></div>
+      </th>
+      <th>ملاحظات <span class="filter-icon" onclick="toggleFilterMenu(event, 11)">▼</span>
+        <div class="filter-dropdown" data-column="11"><span class="sort-toggle" onclick="toggleSort(11, this)">⇅</span><input type="text" onkeyup="filterColumn(this, 11)" placeholder="بحث..."></div>
+      </th>
+      <th class="no-print">الإجراء</th>
+    </tr>
+  
+</thead>
+      <tbody>
+        {% for m in members if m.role == 'متدرب' %}
+  <tr data-id="{{ m['id'] }}">
+    <td><input type="checkbox" class="member-checkbox"></td>
+    <td><span class="cell-value">{{ m['name'] }}</span></td>
+    <td><span class="cell-value">{{ m['username'] }}</span></td>
+    <td><span class="cell-value">{{ m['national_id'] }}</span></td>
+    <td><span class="cell-value">{{ m['phone'] }}</span></td>
+    <td><span class="cell-value">{{ m['email'] }}</span></td>
+    <td><span class="cell-value">{{ m['intern_specialty'] }}</span></td>
+    <td><span class="cell-value">{{ m['university'] }}</span></td>
+    <td><span class="cell-value">{{ m['start_date'] }}</span></td>
+    <td><span class="cell-value">{{ m['end_date'] }}</span></td>
+    <td>
+      {% if m['training_days'] %}
+        {{ m['training_days'] }} يوم
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td><span class="cell-value">{{ m['notes'] }}</span></td>
+          <td class="no-print">
+            {% if session['permission'] == 'أدمن' or session['permission'] == 'تعديل' %}
+              <button class="edit-btn" onclick="enableEdit(this)">تعديل</button>
+            {% endif %}
+            {% if session['permission'] == 'أدمن' or session['permission'] == 'حذف' %}
+              <button class="delete-btn" onclick="deleteRow(this)">حذف</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <button class="no-print" onclick="printSelected()">طباعة</button>
+
+  <script>
+    function printSelected() {
+    const currentTable = document.querySelector('#employeesTableWrapper').style.display !== 'none'
+      ? document.getElementById('employeesTable')
+      : document.getElementById('internsTable');
+
+    const allRows = currentTable.querySelectorAll('tbody tr');
+    let selectedRows = [];
+
+    allRows.forEach((row, index) => {
+      const checkboxCell = row.querySelector('td');
+      const checkbox = checkboxCell.querySelector('input[type="checkbox"]');
+
+      if (checkbox && checkbox.checked) {
+        // إخفاء التشيك بوكس واستبداله برقم
+        checkboxCell.innerHTML = '';
+        checkboxCell.setAttribute('data-print-number', selectedRows.length + 1);
+        selectedRows.push(row);
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    if (selectedRows.length === 0) {
+      alert('الرجاء اختيار أعضاء أولاً');
+      allRows.forEach(r => r.style.display = '');
+      return;
+    }
+
+    // إخفاء أزرار التبديل وزر تسجيل الخروج مؤقتًا
+    document.querySelector('.view-toggle')?.classList.add('no-print');
+    document.querySelector('form[action*="logout"]')?.classList.add('no-print');
+
+    window.print();
+
+    setTimeout(() => {
+      allRows.forEach(r => r.style.display = '');
+    }, 500);
+  }
+
+  function toggleView(who) {
+    document.getElementById('employeesTableWrapper').style.display = who === 'employees' ? '' : 'none';
+    document.getElementById('internsTableWrapper').style.display = who === 'interns' ? '' : 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.selectAllCheckbox').forEach(checkbox => {
+      checkbox.addEventListener('change', function () {
+        const table = this.closest('table');
+        table.querySelectorAll('.member-checkbox').forEach(cb => cb.checked = this.checked);
+      });
+    });
+  });
+
+  function enableEdit(button) {
+    const row = button.closest('tr');
+    const cells = row.querySelectorAll('td');
+    const values = [];
+
+    for (let i = 1; i < cells.length - 1; i++) {
+      const span = cells[i].querySelector('.cell-value');
+      const value = span ? span.textContent : '';
+      values.push(value);
+      if (span) {
+        span.innerHTML = `<input type="text" class="edit-input" value="${value}">`;
+      }
+    }
+
+    const controlCell = cells[cells.length - 1];
+    controlCell.innerHTML = `
+      <button class="save-btn" onclick="saveEdit(this)">حفظ</button>
+      <button class="cancel-btn" onclick='cancelEdit(this, ${JSON.stringify(values)})'>إلغاء</button>
+    `;
+  }
+
+  function cancelEdit(button, oldValues) {
+    const row = button.closest('tr');
+    const cells = row.querySelectorAll('td');
+    for (let i = 1; i < cells.length - 1; i++) {
+      cells[i].innerHTML = `<span class="cell-value">${oldValues[i - 1]}</span>`;
+    }
+
+    const controlCell = cells[cells.length - 1];
+    controlCell.innerHTML = `
+      <button class="edit-btn" onclick="enableEdit(this)">تعديل</button>
+      <button class="delete-btn" onclick="deleteRow(this)">حذف</button>
+    `;
+  }
+
+  function saveEdit(button) {
+  const row = button.closest('tr');
+  const id = row.getAttribute('data-id');
+  const cells = row.querySelectorAll('td');
+
+  const isEmployee = row.closest('table').id === 'employeesTable';
+  const isIntern = row.closest('table').id === 'internsTable';
+
+  let data = {
+    id: id,
+    name: cells[1].querySelector('input')?.value || '',
+    username: cells[2].querySelector('input')?.value || '',
+    national_id: cells[3].querySelector('input')?.value || '',
+    phone: cells[4].querySelector('input')?.value || '',
+    email: cells[5].querySelector('input')?.value || '',
+    role: isEmployee ? 'موظف' : 'متدرب',
+    specialty: isEmployee ? (cells[6].querySelector('input')?.value || '') : '',
+    intern_specialty: isIntern ? (cells[6].querySelector('input')?.value || '') : '',
+    university: isIntern ? (cells[7].querySelector('input')?.value || '') : '',
+    start_date: isEmployee ? (cells[7].querySelector('input')?.value || '') : (cells[8].querySelector('input')?.value || ''),
+    end_date: isIntern ? (cells[9].querySelector('input')?.value || '') : '',
+    notes: isEmployee ? (cells[8].querySelector('input')?.value || '') : (cells[11].querySelector('input')?.value || '')
+  };
+
+  fetch('/update_member', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(res => {
+    if (res.ok) {
+      for (let i = 1; i < cells.length - 1; i++) {
+        const input = cells[i].querySelector('input');
+        const newValue = input ? input.value : cells[i].textContent;
+        cells[i].innerHTML = `<span class="cell-value">${newValue}</span>`;
+      }
+      const controlCell = cells[cells.length - 1];
+      controlCell.innerHTML = `
+        <button class="edit-btn" onclick="enableEdit(this)">تعديل</button>
+        <button class="delete-btn" onclick="deleteRow(this)">حذف</button>
+      `;
+    } else {
+      alert('فشل في حفظ التعديلات.');
+    }
+  }).catch(err => {
+    console.error('خطأ في الاتصال بالسيرفر:', err);
+    alert('حدث خطأ في الاتصال بالسيرفر.');
+  });
+}
+
+  function deleteRow(button) {
+    if (!confirm('هل أنت متأكد أنك تريد حذف هذا العضو؟')) return;
+    const row = button.closest('tr');
+    const id = row.getAttribute('data-id');
+
+    fetch('/delete_member', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id })
+    }).then(res => {
+      if (res.ok) {
+        row.remove();
+      } else {
+        alert('فشل في حذف العضو.');
+      }
+    });
+  }
+
+  function toggleFilterMenu(event, column) {
+  event.stopPropagation();
+
+  const currentTable = document.querySelector('#employeesTableWrapper').style.display !== 'none'
+    ? document.querySelector('#employeesTable')
+    : document.querySelector('#internsTable');
+
+  // أغلق كل الفلاتر المفتوحة في الجدول الحالي فقط
+  currentTable.querySelectorAll('.filter-dropdown').forEach(menu => {
+    if (parseInt(menu.dataset.column) !== column) menu.style.display = 'none';
+  });
+
+  // افتح الفلتر الصحيح فقط
+  const menu = currentTable.querySelector(`.filter-dropdown[data-column="${column}"]`);
+  if (menu) {
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  }
+}
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.filter-dropdown') && !e.target.classList.contains('filter-icon')) {
+      document.querySelectorAll('.filter-dropdown').forEach(menu => menu.style.display = 'none');
+    }
+  });
+
+  function filterColumn(input, columnIndex) {
+  const currentTable = document.querySelector('#employeesTableWrapper').style.display !== 'none'
+    ? document.getElementById('employeesTable')
+    : document.getElementById('internsTable');
+
+  const rows = currentTable.querySelectorAll('tbody tr');
+  const filter = input.value.toLowerCase();
+
+  rows.forEach(row => {
+    const cell = row.cells[columnIndex];
+    if (!cell) return;
+    const text = cell.textContent.toLowerCase();
+    row.style.display = text.includes(filter) ? '' : 'none';
+  });
+}
+
+  let sortStates = {};
+
+  function toggleSort(columnIndex, icon) {
+    if (!sortStates[columnIndex]) {
+      sortStates[columnIndex] = 'asc';
+      icon.textContent = '⇧';
+    } else if (sortStates[columnIndex] === 'asc') {
+      sortStates[columnIndex] = 'desc';
+      icon.textContent = '⇩';
+    } else {
+      sortStates[columnIndex] = 'asc';
+      icon.textContent = '⇧';
+    }
+
+    sortTable(columnIndex, sortStates[columnIndex] === 'asc');
+  }
+
+  function sortTable(columnIndex, ascending = true) {
+    const table = document.querySelector('#employeesTableWrapper').style.display !== 'none'
+      ? document.getElementById('employeesTable')
+      : document.getElementById('internsTable');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a, b) => {
+      const cellA = a.cells[columnIndex]?.textContent.trim().toLowerCase();
+      const cellB = b.cells[columnIndex]?.textContent.trim().toLowerCase();
+      return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+  }
+</script>
+
+<form action="{{ url_for('logout') }}" method="POST" style="margin-top: 20px; text-align: center;">
+  <button type="submit" style="
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.backgroundColor='white'; this.style.color='orange'; this.style.border='1px solid orange';"
+  onmouseout="this.style.backgroundColor='orange'; this.style.color='white'; this.style.border='none';">
+    تسجيل الخروج
+  </button>
+</form>
+</body>
+</html>

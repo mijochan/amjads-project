@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>لوحة تحكم الأدمن</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+    }
+
+    body { background-color: #f2f2f2; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: block;}
+
+    .container {
+      display: flex; width: 100%; min-height: 100vh;
+    }
+
+    .image-section {
+      width: 70%;
+      background-image: url("{{ url_for('static', filename='images/background.jpg') }}");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .form-section {
+      width: 50%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 350px;
+      height: auto;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .admin-button {
+      width: 100%;
+      padding: 15px;
+      background-color: #009999;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    
+
+    footer { margin-top: auto;}
+
+    .admin-button:hover {
+      background: white;
+      color: #009999;
+      border: 1px solid #009999;
+    }
+
+  
+  </style>
+</head>
+
+<body>
+  
+  <div class="container">
+    <div class="image-section"></div>
+
+    <div class="form-section">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار المنصة">
+      </div>
+
+      
+      <h2>لوحة تحكم الأدمن</h2>
+      
+
+      <div class="button-container">
+  <a href="{{ url_for('view_members') }}" class="admin-button">استعراض الأعضاء</a>
+  <a href="{{ url_for('add_member') }}" class="admin-button">إضافة عضو جديد</a>
+  <a href="{{ url_for('update_email') }}" class="admin-button">الإعدادات</a>
+</div>
+      <div style="min-height: 30px;">
+        {% if error %}
+          <p style="color: red; font-weight: bold; margin: 5px 0 0 0;">{{ error }}</p>
+        {% endif %}
+      </div>
+      <form action="{{ url_for('logout') }}" method="POST" style="margin-top: 20px; text-align: center;">
+  <button type="submit" style="
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.backgroundColor='white'; this.style.color='orange'; this.style.border='1px solid orange';"
+  onmouseout="this.style.backgroundColor='orange'; this.style.color='white'; this.style.border='none';">
+    تسجيل الخروج
+  </button>
+</form>
+    </div>
+    
+    </div>
+  
+  <!-- الفوتر -->
+  <footer style="background-color:#0d7a7a; color: white; padding: 40px 0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-start; max-width: 1300px; margin: auto; text-align: right; gap: 30px;">
+      <!-- كل الأعمدة داخل هنا بدون تغيير -->
+    
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px; padding-right: 100px;">
+        <h3>نظرة عامة</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="https://www.hrsd.gov.sa/ministry/about-ministry" style="color:white; text-decoration: none;">عن الوزارة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/how-use" style="color:white; text-decoration: none;">كيفية الإستخدام</a></li>
+          <li><a href="https://www.hrsd.gov.sa/benefits-registering" style="color:white; text-decoration: none;">التسجيل في البوابة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/benefits-registering/register" style="color:white; text-decoration: none;">التسجيل بالنشرة الإخبارية</a></li>
+          <li><a href="https://www.hrsd.gov.sa/service-level-agreement" style="color:white; text-decoration: none;">اتفاقية مستوى الخدمة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/729863" style="color:white; text-decoration: none;">أمن المعلومات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/ministry-services/electronic-portals" style="color:white; text-decoration: none;">المنصات الرقمية</a></li>
+          <li><a href="https://www.hrsd.gov.sa/media-center/news" style="color:white; text-decoration: none;">الأخبار</a></li>
+          <li><a href="https://www.hrsd.gov.sa/media-center/events" style="color:white; text-decoration: none;">الفعاليات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/accessibility-policy" style="color:white; text-decoration: none;">سياسة سهولة الوصول</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3>الدعم والمساعدة</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="https://www.hrsd.gov.sa/contact-us" style="color:white; text-decoration: none;">تواصل معنا</a></li>
+          <li><a href="https://mol.gov.sa/Services/Inquiry/GeneralAppointment.aspx" style="color:white; text-decoration: none;">حجز موعد إلكتروني</a></li>
+          <li><a href="https://www.iam.gov.sa/authservice/userauthservice?lang=ar" style="color:white; text-decoration: none;">تقديم شكوى</a></li>
+          <li><a href="https://www.my.gov.sa/wps/portal/snp/content/reportcorruption" style="color:white; text-decoration: none;">التبليغ عن الفساد</a></li>
+          <li><a href="https://www.hrsd.gov.sa/freedom-information" style="color:white; text-decoration: none;">حرية المعلومات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/contact-us/faq" style="color:white; text-decoration: none;">الأسئلة الشائعة</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3>روابط مهمة</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="https://laws.boe.gov.sa/BoeLaws/Laws/" style="color:white; text-decoration: none;">هيئة الخبراء بمجلس الوزراء </a></li>
+          <li><a href="https://www.hrsd.gov.sa/knowledge-centre/open-data" style="color:white; text-decoration: none;">البيانات المفتوحة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/817" style="color:white; text-decoration: none;">ميثاق العملاء</a></li>
+          <li><a href="https://eparticipation.my.gov.sa/" style="color:white; text-decoration: none;">منصة المشاركة الإلكترونية</a></li>
+          <li><a href="https://www.hrsd.gov.sa/govsa" style="color:white; text-decoration: none;">بوابة سعودي الوطنية</a></li>
+          <li><a href="https://uqn.gov.sa/" style="color:white; text-decoration: none;">جريدة أم القرى</a></li>
+          <li><a href="https://www.spa.gov.sa/" style="color:white; text-decoration: none;">وكالة الأنباء السعودية </a></li>
+          <li><a href="https://ncar.gov.sa/Home/Index" style="color:white; text-decoration: none;">المركز الوطني للوثائق والمحفوظات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/service-level-agreement" style="color:white; text-decoration: none;">اتفاقية مستوى الخدمة</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3> التدريب والتطوع</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="{{ url_for('apply_form') }}" style="color:white; text-decoration: none;">نموذج التقديم</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3>تابعنا على</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <!-- السطر الأول -->
+          <div style="display: flex; gap: 10px;">
+            <a href="https://instagram.com/hrsd_sa?igshid=YmMyMTA2M2Y%3D" target="_blank">
+              <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Instagram" style="width: 24px;">
+            </a>
+            <a href="https://twitter.com/HRSD_SA" target="_blank">
+              <img src="{{ url_for('static', filename='images/x1.png') }}" alt="X" style="width: 24px;">
+            </a>
+            <a href="https://www.tiktok.com/@hrsd.sa" target="_blank">
+              <img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok" style="width: 24px;">
+            </a>
+            <a href="https://www.snapchat.com/add/hrsd.sa" target="_blank">
+              <img src="{{ url_for('static', filename='images/snapchat.png') }}" alt="Snapchat" style="width: 24px;">
+            </a>
+          </div>
+          <!-- السطر الثاني -->
+          <div style="display: flex; gap: 10px;">
+            <a href="https://www.facebook.com/HRSD.SA" target="_blank">
+              <img src="{{ url_for('static', filename='images/facebook.png') }}" alt="Facebook" style="width: 24px;">
+            </a>
+            <a href="https://sa.linkedin.com/company/ministry-of-human-resources-and-social-development-ksa?trk=public_profile_topcard_current_compan" target="_blank">
+              <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="LinkedIn" style="width: 24px;">
+            </a>
+            <a href="https://www.youtube.com/user/MinistryOfLabor/videos?app=desktop" target="_blank">
+              <img src="{{ url_for('static', filename='images/youtube.png') }}" alt="YouTube" style="width: 24px;">
+            </a>
+          </div>
+        </div>
+      </div>
+    
+  </footer>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إضافة عضو جديد</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f2f2f2; display: flex; justify-content: center; padding: 50px 20px; min-height: 100vh; }
+    .form-container { background-color: white; padding: 30px 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 100%; max-width: 500px; text-align: center; }
+    .form-container img { max-width: 300px; margin-bottom: 20px; }
+    h2 { margin-bottom: 20px; color: #333; }
+    .choice-radio { margin-bottom: 20px; text-align: right; display: flex; justify-content: center; gap: 5px; }
+    .choice-radio input { margin-left: 0px; margin-right: 30px; }
+    .choice-radio label { font-size: 18px; cursor: pointer; }
+    form { width: 100%; text-align: right; }
+    label { display: block; margin-bottom: 10px; color: #444; font-weight: bold; }
+    input[type="text"], input[type="password"], input[type="email"], input[type="date"], select, textarea {
+      width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px;
+    }
+    button[type="submit"] {
+      width: 100%; padding: 12px; background-color: #009999; color: white; border: none;
+      border-radius: 6px; font-size: 16px; cursor: pointer; transition: all 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: white; color: #009999; border: 1px solid #009999;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار الموقع">
+    <h2>إضــــــافــــــة عــــــضــــــو جــــــديـــــــد</h2>
+
+    {% if message %}
+      <div style="margin-bottom: 20px; color: {% if message_type == 'success' %}green{% else %}red{% endif %}; font-weight: bold;">
+        {{ message }}
+      </div>
+    {% endif %}
+
+    
+    {% if not message %}
+  <div class="choice-radio">
+    <input type="radio" id="employee" name="memberType" value="موظف" onclick="showFields('موظف')">
+    <label for="employee">موظف</label>
+    <input type="radio" id="intern" name="memberType" value="متدرب" onclick="showFields('متدرب')">
+    <label for="intern">متدرب</label>
+  </div>
+{% endif %}
+
+    <form method="POST">
+      <div id="fields-section" class="hidden">
+        <input type="hidden" id="member-type" name="member-type">
+
+        <label for="username">اسم المستخدم:</label>
+        <input type="text" id="username" name="username">
+
+        <label for="password">كلمة المرور:</label>
+        <input type="password" id="password" name="password">
+
+        <label for="fullname">الاسم الثلاثي:</label>
+        <input type="text" id="fullname" name="fullname">
+
+        <label for="id_number">السجل المدني:</label>
+        <input type="text" id="id_number" name="id_number">
+
+        <label for="phone">رقم الجوال:</label>
+        <input type="text" id="phone" name="phone">
+
+        <label for="email">البريد الإلكتروني:</label>
+        <input type="email" id="email" name="email">
+
+        <!-- حقول الموظف -->
+        <div id="employee-fields" class="hidden">
+          <label for="specialization">التخصص:</label>
+          <select id="specialization" name="specialization">
+            <option value="">اختر التخصص</option>
+            <option value="مدير تنفيذي">مدير تنفيذي</option>
+            <option value="مدير مالي">مدير مالي</option>
+            <option value="اخصائي ميزانيات">اخصائي ميزانيات</option>
+            <option value="مدير عمليات">مدير عمليات</option>
+            <option value="مدير موارد بشرية">مدير موارد بشرية</option>
+            <option value="اخصائي موارد بشرية">اخصائي موارد بشرية</option>
+            <option value="اخصائي تطوير تنظيمي">اخصائي تطوير تنظيمي</option>
+            <option value="محاسب حكومي">محاسب حكومي</option>
+            <option value="مدقق مالي">مدقق مالي</option>
+            <option value="محلل مالي">محلل مالي</option>
+            <option value="امين خزينة">امين خزينة</option>
+            <option value="مسؤول توظيف">مسؤول توظيف</option>
+            <option value="اخصائي تدريب وتطوير">اخصائي تدريب وتطوير</option>
+            <option value="مسؤول شؤون موظفين">مسؤول شؤون الموظفين</option>
+            <option value="مسؤول تقييم اداء">مسؤول تقييم اداء</option>
+            <option value="مدير تسويق">مدير تسويق</option>
+            <option value="اخصائي تسويق رقمي">اخصائي تسويق رقمي</option>
+            <option value="مصمم جرافيك">مصمم جرافيك</option>
+            <option value="مسؤول التواصل الاجتماعي">مسؤول وسائل التواصل الاجتماعي</option>
+            <option value="مبرمج">مبرمج</option>
+            <option value="مهندس شبكة">مهندس شبكة</option>
+            <option value="دعم فني">دعم فني</option>
+            <option value="مدير نظم">مدير نظم</option>
+            <option value="مطور نظم ومواقع">مطور نظم ومواقع</option>
+            <option value="مهندس امن سيبراني">مهندس امن سيبراني</option>
+            <option value="اخصائي قواعد بيانات">اخصائي قواعد بيانات</option>
+            <option value="محلل نظم معلومات">محلل نظم معلومات</option>
+            <option value="مدير مشاريع تقنية">مدير مشاريع تقنية</option>
+            <option value="مسؤول حملات توعوية">مسؤول حملات توعوية</option>
+            <option value="اخصائي اعلام رقمي">اخصائي اعلام رقمي</option>
+            <option value="كاتب محتوى">كاتب محتوى</option>
+            <option value="مسؤول علاقات عامة">مسؤول علاقات عامة</option>
+            <option value="اخصائي سياسات عامة">اخصائي سياسات عامة</option>
+            <option value="اخصائي تطوير استراتيجيات">اخصائي تطوير استراتيجيات</option>
+            <option value="محلل بيانات اجتماعية">محلل بيانات اجتماعية</option>
+            <option value="مسؤول دراسات وبحوث">مسؤول دراسات وبحوث</option>
+            <option value="سكرتير تنفيذي">سكرتير تنفيذي</option>
+            <option value="موظف استقبال واستعلامات">موظف استقبال واستعلامات</option>
+            <option value="مسؤول ارشفة">مسؤول ارشفة</option>
+            <option value="مستشار قانوني">مستشار قانوني</option>
+            <option value="مسؤول امتثال">مسؤول امتثال</option>
+            <option value="مراقب داخلي">مراقب داخلي</option>
+            <option value="محقق اداري">محقق اداري</option>
+            <option value="كسؤول عقود">مسؤول عقود</option>
+            <option value="اخصائي خدمة اجتماعية">اخصائي خدمة اجتماعية</option>
+            <option value="اخصائي خدمة عملاء">اخصائي خدمة عملاء</option>
+            <option value="مشرف مراكز خدمة">مشرف مراكز خدمة</option>
+            <option value="اخصائي نفسي">اخصائي نفسي</option>
+            <option value="اخصائي تمكين">اخصائي تمكين</option>
+            <option value="باحث اجتماعي">باحث اجتماعي</option>
+            <option value="اخصائي ارشاد وتوجيه">اخصائي ارشاد وتوجيه</option>
+            <option value="مسؤول برامج تأهيل وتمكين">مسؤول برامج تأهيل وتمكين</option>
+            <option value="مترجم">مترجم</option>
+          </select>
+
+          <label for="permission">الصلاحية:</label>
+          <select id="permission" name="permission">
+            <option value="">اختر الصلاحية</option>
+            <option value="أدمن">أدمن (تحكم كامل)</option>
+            <option value="تعديل">تعديل فقط</option>
+            <option value="حذف">حذف فقط</option>
+          </select>
+
+          <label for="start_date">تاريخ المباشرة:</label>
+          <input type="date" id="employee_start_date" name="employee_start_date">
+        </div>
+
+      </select>
+
+      
+
+        <!-- حقول المتدرب -->
+        <div id="intern-fields" class="hidden">
+          <label for="intern_specialization">تخصص المتدرب:</label>
+      <select id="intern_specialization" name="intern_specialization">
+        <option value="">اختر التخصص</option>
+        <option value="المحاسبة والضرائب">المحاسبة والضرائب</option>
+        <option value="ادارة الفنادق والمنتجعات السياحية">ادارة الفنادق والمنتجعات السياحية</option>
+        <option value="التسويق والتجارة الالكترونية">التسويق والتجارة الالكترونية</option>
+        <option value="ادارة سلاسل الامداد والخدمات اللوجستية">ادارة سلاسل الامداد والخدمات اللوجستية</option>
+        <option value="التأمين وادارة المخاطر">التأمين وادارة المخاطر</option>
+        <option value="ادارة الاعمال">ادارة الاعمال</option>
+        <option value="التصميم الجرافيكي">التصميم الجرافيكي</option>
+        <option value="الامن السيبراني">الامن السيبراني</option>
+        <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+        <option value="السلامة والصحة المهنية">السلامة والصحة المهنية</option>
+        <option value="العلاقات العامة والاعلام">العلاقات العامة والاعلام</option>
+        <option value="الموارد البشرية">الموارد البشرية</option>
+      </select>
+          <label for="university">اسم الجامعة/المعهد:</label>
+          <select id="university" name="university">
+            <option value="">اختر الجامعة/المعهد</option>
+            <option value="جامعة الإمام عبد الرحمن بن فيصل">جامعة الإمام عبد الرحمن بن فيصل</option>
+            <option value="أكاديمية التعلم">أكاديمية التعلم</option>
+            <option value="جامعة الأميرة نورة بنت عبد الرحمن">جامعة الأميرة نورة بنت عبد الرحمن</option>
+            <option value="جامعة الإمام محمد بن سعود الاسلامية">جامعة الإمام محمد بن سعود الاسلامية</option>
+            <option value="جامعة الملك سعود">جامعة الملك سعود</option>
+            <option value="معهد الإدارة العامة">معهد الإدارة العامة</option>
+            <option value="جامعة الملك سعود بن عبد العزيز للعلوم الصحية">جامعة الملك سعود بن عبد العزيز للعلوم الصحية</option>
+            <option value="جامعة الملك عبد العزيز">جامعة الملك عبد العزيز</option>
+            <option value="جامعة جدة">جامعة جدة</option>
+            <option value="جامعة الملك فهد للبترول والمعادن">جامعة الملك فهد للبترول والمعادن</option>
+            <option value="جامعة الملك فيصل">جامعة الملك فيصل</option>
+            <option value="جامعة ام القرى">جامعة ام القرى</option>
+            <option value="جامعة الطائف">جامعة الطائف</option>
+            <option value="الجامعة الاسلامية">الجامعة الاسلامية</option>
+            <option value="جامعة طيبة">جامعة طيبة</option>
+            <option value="جامعة حائل">جامعة حائل</option>
+            <option value="جامعة نجران">جامعة نجران</option>
+            <option value="جامعة جازان">جامعة جازان</option>
+            <option value="جامعة الباحة">جامعة الباحة</option>
+            <option value="جامعة الحدود الشمالية">جامعة الحدود الشمالية</option>
+            <option value="جامعة تبوك">جامعة تبوك</option>
+            <option value="جامعة شقراء">جامعة شقراء</option>
+            <option value="جامعة المجمعة">جامعة المجمعة</option>
+            <option value="جامعة بيشة">جامعة بيشة</option>
+            <option value="جامعة الامير محمد بن فهد">جامعة الامير محمد بن فهد</option>
+            <option value="جامعة الامير سلطان">جامعة الامير سلطان</option>
+            <option value="جامعة الفيصل">جامعة الفيصل</option>
+            <option value="جامعة عفت">جامعة عفت</option>
+            <option value="جامعة دار الحكمة">جامعة دار الحكمة</option>
+            <option value="جامعة المعرفة">جامعة المعرفة</option>
+            <option value="جامعة رياض العلم">جامعة رياض العلم</option>
+            <option value="جامعة الاعمال والتكنولوجيا">جامعة الاعمال والتكنولوجيا</option>
+            <option value="الكلية التقنية">الكلية التقنية</option>
+            <option value="المعهد الصناعي الثانوي">المعهد الصناعي الثانوي</option>
+            <option value="معهد نيوهورايزن">معهد نيوهورايزن</option>
+            <option value="معهد العالمية للتعليم">معهد العالمية للتعليم</option>
+            <option value="معهد الخليج">معهد الخليج</option>
+            <option value="معهد اكسفورد">معهد اكسفورد</option>
+          </select>
+
+          <label for="start_date">تاريخ بداية التدريب:</label>
+          <input type="date" id="intern_start_date" name="intern_start_date">
+
+          <label for="end_date">تاريخ نهاية التدريب:</label>
+          <input type="date" id="end_date" name="end_date">
+          <label for="training_days">مدة التدريب (بالأيام):</label>
+<input type="text" id="training_days" name="training_days" readonly>
+        </div>
+        
+
+        <label for="notes">ملاحظات:</label>
+        <textarea id="notes" name="notes" rows="4"></textarea>
+
+        <button type="submit">إضافة</button>
+      </div>
+    </form>
+  <form action="{{ url_for('logout') }}" method="POST" style="margin-top: 20px; text-align: center;">
+  <button type="submit" style="
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.backgroundColor='white'; this.style.color='orange'; this.style.border='1px solid orange';"
+  onmouseout="this.style.backgroundColor='orange'; this.style.color='white'; this.style.border='none';">
+    تسجيل الخروج
+  </button>
+</form>
+  </div>
+
+
+
+
+  <script>
+    function showFields(type) {
+      document.getElementById("fields-section").classList.remove("hidden");
+      document.getElementById("member-type").value = type;
+      document.getElementById("employee-fields").classList.toggle("hidden", type !== "موظف");
+      document.getElementById("intern-fields").classList.toggle("hidden", type !== "متدرب");
+    }
+    function calculateTrainingDays() {
+    const start = document.getElementById("intern_start_date").value;
+    const end = document.getElementById("end_date").value;
+
+    if (start && end) {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+
+      if (endDate >= startDate) {
+        const diffTime = endDate - startDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        document.getElementById("training_days").value = diffDays + " يوم";
+      } else {
+        document.getElementById("training_days").value = "تاريخ غير صحيح";
+      }
+    } else {
+      document.getElementById("training_days").value = "";
+    }
+  }
+
+  // تحديث الحقل تلقائياً عند تغيير التاريخ
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("intern_start_date").addEventListener("change", calculateTrainingDays);
+    document.getElementById("end_date").addEventListener("change", calculateTrainingDays);
+  });
+
+    
+  </script>
+  
+</body>
+</html>

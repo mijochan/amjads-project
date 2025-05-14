@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نموذج التقديم على التدريب أو التطوع</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      padding: 40px 20px;
+    }
+
+    form {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 650px;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 280px;
+      height: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #004d4d;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #009999;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background-color: #009999;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #007a7a;
+    }
+  </style>
+</head>
+<body>
+
+  <form action="/apply" method="POST" enctype="multipart/form-data">
+
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار المنصة">
+    </div>
+
+    <h2>نموذج التقديم على التدريب أو التطوع</h2>
+    {% if success %}
+  <div style="color: green; margin-top: 15px; text-align: center; font-weight: bold;">
+    تم إرسال طلبك بنجاح!
+  </div>
+{% endif %}
+    
+    {% if not success %}
+    
+    <label for="type">نوع الطلب:</label>
+    <select name="type" id="type" required>
+      <option value="">اختر النوع</option>
+      <option value="تدريب">تدريب</option>
+      <option value="تطوع">تطوع</option>
+    </select>
+
+    <label for="name">الاسم الكامل:</label>
+    <input type="text" name="name" id="name" required>
+
+     <label for="phone">رقم الجوال:</label>
+    <input type="text" name="phone" id="phone" required>
+
+    <label for="email">البريد الإلكتروني:</label>
+    <input type="email" name="email" id="email" required>
+
+   
+
+    <label for="city">المدينة:</label>
+    <input type="text" name="city" id="city" required>
+
+    <label for="intern_specialization">التخصص:</label>
+      <select id="intern_specialization" name="intern_specialization">
+        <option value="">اختر التخصص</option>
+        <option value="المحاسبة والضرائب">المحاسبة والضرائب</option>
+        <option value="ادارة الفنادق والمنتجعات السياحية">ادارة الفنادق والمنتجعات السياحية</option>
+        <option value="التسويق والتجارة الالكترونية">التسويق والتجارة الالكترونية</option>
+        <option value="ادارة سلاسل الامداد والخدمات اللوجستية">ادارة سلاسل الامداد والخدمات اللوجستية</option>
+        <option value="التأمين وادارة المخاطر">التأمين وادارة المخاطر</option>
+        <option value="ادارة الاعمال">ادارة الاعمال</option>
+        <option value="التصميم الجرافيكي">التصميم الجرافيكي</option>
+        <option value="الامن السيبراني">الامن السيبراني</option>
+        <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+        <option value="السلامة والصحة المهنية">السلامة والصحة المهنية</option>
+        <option value="العلاقات العامة والاعلام">العلاقات العامة والاعلام</option>
+        <option value="الموارد البشرية">الموارد البشرية</option>
+      </select>
+
+    <label for="university"> الجامعة/المعهد:</label>
+          <select id="university" name="university">
+            <option value="">اختر الجامعة/المعهد</option>
+            <option value="جامعة الإمام عبد الرحمن بن فيصل">جامعة الإمام عبد الرحمن بن فيصل</option>
+            <option value="أكاديمية التعلم">أكاديمية التعلم</option>
+            <option value="جامعة الأميرة نورة بنت عبد الرحمن">جامعة الأميرة نورة بنت عبد الرحمن</option>
+            <option value="جامعة الإمام محمد بن سعود الاسلامية">جامعة الإمام محمد بن سعود الاسلامية</option>
+            <option value="جامعة الملك سعود">جامعة الملك سعود</option>
+            <option value="معهد الإدارة العامة">معهد الإدارة العامة</option>
+            <option value="جامعة الملك سعود بن عبد العزيز للعلوم الصحية">جامعة الملك سعود بن عبد العزيز للعلوم الصحية</option>
+            <option value="جامعة الملك عبد العزيز">جامعة الملك عبد العزيز</option>
+            <option value="جامعة جدة">جامعة جدة</option>
+            <option value="جامعة الملك فهد للبترول والمعادن">جامعة الملك فهد للبترول والمعادن</option>
+            <option value="جامعة الملك فيصل">جامعة الملك فيصل</option>
+            <option value="جامعة ام القرى">جامعة ام القرى</option>
+            <option value="جامعة الطائف">جامعة الطائف</option>
+            <option value="الجامعة الاسلامية">الجامعة الاسلامية</option>
+            <option value="جامعة طيبة">جامعة طيبة</option>
+            <option value="جامعة حائل">جامعة حائل</option>
+            <option value="جامعة نجران">جامعة نجران</option>
+            <option value="جامعة جازان">جامعة جازان</option>
+            <option value="جامعة الباحة">جامعة الباحة</option>
+            <option value="جامعة الحدود الشمالية">جامعة الحدود الشمالية</option>
+            <option value="جامعة تبوك">جامعة تبوك</option>
+            <option value="جامعة شقراء">جامعة شقراء</option>
+            <option value="جامعة المجمعة">جامعة المجمعة</option>
+            <option value="جامعة بيشة">جامعة بيشة</option>
+            <option value="جامعة الامير محمد بن فهد">جامعة الامير محمد بن فهد</option>
+            <option value="جامعة الامير سلطان">جامعة الامير سلطان</option>
+            <option value="جامعة الفيصل">جامعة الفيصل</option>
+            <option value="جامعة عفت">جامعة عفت</option>
+            <option value="جامعة دار الحكمة">جامعة دار الحكمة</option>
+            <option value="جامعة المعرفة">جامعة المعرفة</option>
+            <option value="جامعة رياض العلم">جامعة رياض العلم</option>
+            <option value="جامعة الاعمال والتكنولوجيا">جامعة الاعمال والتكنولوجيا</option>
+            <option value="الكلية التقنية">الكلية التقنية</option>
+            <option value="المعهد الصناعي الثانوي">المعهد الصناعي الثانوي</option>
+            <option value="معهد نيوهورايزن">معهد نيوهورايزن</option>
+            <option value="معهد العالمية للتعليم">معهد العالمية للتعليم</option>
+            <option value="معهد الخليج">معهد الخليج</option>
+            <option value="معهد اكسفورد">معهد اكسفورد</option>
+          </select>
+
+    <label for="message">أخبرنا عن سبب تقديمك:</label>
+    <textarea name="message" id="message" rows="4" required></textarea>
+
+    <label for="cv_file">رفع السيرة الذاتية (PDF فقط):</label>
+    <input type="file" name="cv_file" id="cv_file" accept=".pdf" required>
+
+    <button type="submit">إرسال الطلب</button>
+    {% endif %}
+  </form>
+  
+</body>
+</html>

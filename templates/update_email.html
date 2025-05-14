@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تحديث البريد المستلم</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .box {
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #009999;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: white;
+      color: #009999;
+      border: 1px solid #009999;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      display: block;
+      color: #009999;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .success-message {
+      color: green;
+      margin-bottom: 10px;
+    }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: block;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .image-section {
+      width: 70%;
+      background-image: url("{{ url_for('static', filename='images/background.jpg') }}");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .form-section {
+      width: 50%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 350px;
+      height: auto;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="image-section"></div>
+
+  <div class="form-section">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار المنصة">
+    </div>
+
+    <div class="box">
+      <h2>تحديث البريد المستلم</h2>
+
+      {% if message %}
+        <div class="success-message">{{ message }}</div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('update_email') }}">
+        <input type="email" name="new_email" placeholder="أدخل البريد الإلكتروني الجديد" required>
+        <button type="submit">تحديث البريد</button>
+      </form>
+
+      <a href="{{ url_for('admin_dashboard') }}" class="back-link">الرجوع إلى لوحة التحكم</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

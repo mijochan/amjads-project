@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>وزارة الموارد البشرية والتنمية الاجتماعية - تسجيل الدخول</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      width: 100%;
+    }
+
+    .image-section {
+      width: 70%;
+      background-image: url("{{ url_for('static', filename='images/background.jpg') }}");
+      background-size: contain;
+      background-position: center;
+    }
+
+    .form-section {
+      width: 50%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 350px;
+      height: auto;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .required-field {
+      border: 1px solid red;
+    }
+
+    .log {
+      width: 100%;
+      padding: 12px;
+      background-color: #009999;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .log:hover {
+      background: #fff !important;
+      border: 1px solid #009999 !important;
+      color: #009999 !important;
+    }
+
+    .error-message {
+      color: red;
+      margin-bottom: 20px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .remember input[type="checkbox"] {
+      margin-left: 10px;
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+    .remember label {
+      font-size: 14px;
+      color: #444;
+      cursor: pointer;
+    }
+
+    .contact-us {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .contact-us p {
+      margin-bottom: 10px;
+    }
+
+    .social-media {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      list-style: none;
+    }
+
+    .social-media li {
+      margin: 0 5px;
+    }
+
+    .social-media img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .social-media img:hover {
+      transform: scale(1.1);
+    }
+
+    .footer-bar {
+      width: 100%;
+      background-color: #e0f7f7;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .footer-bar p {
+      color: #444;
+      font-size: 16px;
+      line-height: 1.8;
+      max-width: 1200px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="image-section"></div>
+    <div class="form-section">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار المنصة">
+      </div>
+
+      <h2>تسجيل الدخول</h2>
+
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/">
+        <label for="username">اسم المستخدم</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" name="password" required>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px;">
+  <label style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: #444; cursor: pointer; margin: 0;">
+    <input type="checkbox" id="remember" name="remember" style="transform: scale(1.2); cursor: pointer;">
+    تذكر اسم المستخدم
+  </label>
+  <a href="{{ url_for('forgot_password') }}" style="font-size: 14px; color: #009999; text-decoration: none;">نسيت كلمة المرور؟</a>
+</div>
+
+        <button type="submit" class="log">تسجيل الدخول</button>
+      </form>
+
+      <div class="contact-us">
+        <p>تابعنا</p>
+        <ul class="social-media">
+          <li>
+            <a href="https://x.com/HRSD_SA?t=250eVLw9hZI0g_M0NxNuwA&s=09" target="_blank">
+              <img src="{{ url_for('static', filename='images/x.png') }}" alt="Twitter">
+            </a>
+          </li>
+          <li>
+            <a href="https://instagram.com/hrsd_sa?igshid=YmMyMTA2M2Y%3D" target="_blank">
+              <img src="{{ url_for('static', filename='images/instagram1.png') }}" alt="Instagram">
+            </a>
+          </li>
+          <li>
+            <a href="https://snapchat.com/add/hrsd_sa" target="_blank">
+              <img src="{{ url_for('static', filename='images/snapchat1.png') }}" alt="Snapchat">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <p>
+      هذه المنصة تابعة لوزارة الموارد البشرية والتنمية الاجتماعية، وتهدف إلى تسهيل عمليات تسجيل الدخول للجهات والموظفين بطريقة سلسة وآمنة. <br>
+      الرجاء التأكد من صحة بيانات الدخول قبل المتابعة. في حال وجود أي مشكلة، يرجى التواصل معنا عبر قنوات الدعم الرسمية.
+    </p>
+  </div>
+
+  <!-- الفوتر -->
+  <footer style="background-color:#0d7a7a; color: white; padding: 40px 0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-start; max-width: 1300px; margin: auto; text-align: right; gap: 30px;">
+      <!-- كل الأعمدة داخل هنا بدون تغيير -->
+    
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px; padding-right: 100px;">
+        <h3>نظرة عامة</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="https://www.hrsd.gov.sa/ministry/about-ministry" style="color:white; text-decoration: none;">عن الوزارة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/how-use" style="color:white; text-decoration: none;">كيفية الإستخدام</a></li>
+          <li><a href="https://www.hrsd.gov.sa/benefits-registering" style="color:white; text-decoration: none;">التسجيل في البوابة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/benefits-registering/register" style="color:white; text-decoration: none;">التسجيل بالنشرة الإخبارية</a></li>
+          <li><a href="https://www.hrsd.gov.sa/service-level-agreement" style="color:white; text-decoration: none;">اتفاقية مستوى الخدمة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/729863" style="color:white; text-decoration: none;">أمن المعلومات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/ministry-services/electronic-portals" style="color:white; text-decoration: none;">المنصات الرقمية</a></li>
+          <li><a href="https://www.hrsd.gov.sa/media-center/news" style="color:white; text-decoration: none;">الأخبار</a></li>
+          <li><a href="https://www.hrsd.gov.sa/media-center/events" style="color:white; text-decoration: none;">الفعاليات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/accessibility-policy" style="color:white; text-decoration: none;">سياسة سهولة الوصول</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3>الدعم والمساعدة</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="https://www.hrsd.gov.sa/contact-us" style="color:white; text-decoration: none;">تواصل معنا</a></li>
+          <li><a href="https://mol.gov.sa/Services/Inquiry/GeneralAppointment.aspx" style="color:white; text-decoration: none;">حجز موعد إلكتروني</a></li>
+          <li><a href="https://www.iam.gov.sa/authservice/userauthservice?lang=ar" style="color:white; text-decoration: none;">تقديم شكوى</a></li>
+          <li><a href="https://www.my.gov.sa/wps/portal/snp/content/reportcorruption" style="color:white; text-decoration: none;">التبليغ عن الفساد</a></li>
+          <li><a href="https://www.hrsd.gov.sa/freedom-information" style="color:white; text-decoration: none;">حرية المعلومات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/contact-us/faq" style="color:white; text-decoration: none;">الأسئلة الشائعة</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3>روابط مهمة</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="https://laws.boe.gov.sa/BoeLaws/Laws/" style="color:white; text-decoration: none;">هيئة الخبراء بمجلس الوزراء </a></li>
+          <li><a href="https://www.hrsd.gov.sa/knowledge-centre/open-data" style="color:white; text-decoration: none;">البيانات المفتوحة</a></li>
+          <li><a href="https://www.hrsd.gov.sa/817" style="color:white; text-decoration: none;">ميثاق العملاء</a></li>
+          <li><a href="https://eparticipation.my.gov.sa/" style="color:white; text-decoration: none;">منصة المشاركة الإلكترونية</a></li>
+          <li><a href="https://www.hrsd.gov.sa/govsa" style="color:white; text-decoration: none;">بوابة سعودي الوطنية</a></li>
+          <li><a href="https://uqn.gov.sa/" style="color:white; text-decoration: none;">جريدة أم القرى</a></li>
+          <li><a href="https://www.spa.gov.sa/" style="color:white; text-decoration: none;">وكالة الأنباء السعودية </a></li>
+          <li><a href="https://ncar.gov.sa/Home/Index" style="color:white; text-decoration: none;">المركز الوطني للوثائق والمحفوظات</a></li>
+          <li><a href="https://www.hrsd.gov.sa/service-level-agreement" style="color:white; text-decoration: none;">اتفاقية مستوى الخدمة</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3> التدريب والتطوع</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="{{ url_for('apply_form') }}" style="color:white; text-decoration: none;">نموذج التقديم</a></li>
+        </ul>
+      </div>
+
+      <div style="flex: 1; min-width: 200px; margin-bottom: 20px;">
+        <h3>تابعنا على</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <!-- السطر الأول -->
+          <div style="display: flex; gap: 10px;">
+            <a href="https://instagram.com/hrsd_sa?igshid=YmMyMTA2M2Y%3D" target="_blank">
+              <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Instagram" style="width: 24px;">
+            </a>
+            <a href="https://twitter.com/HRSD_SA" target="_blank">
+              <img src="{{ url_for('static', filename='images/x1.png') }}" alt="X" style="width: 24px;">
+            </a>
+            <a href="https://www.tiktok.com/@hrsd.sa" target="_blank">
+              <img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok" style="width: 24px;">
+            </a>
+            <a href="https://www.snapchat.com/add/hrsd.sa" target="_blank">
+              <img src="{{ url_for('static', filename='images/snapchat.png') }}" alt="Snapchat" style="width: 24px;">
+            </a>
+          </div>
+          <!-- السطر الثاني -->
+          <div style="display: flex; gap: 10px;">
+            <a href="https://www.facebook.com/HRSD.SA" target="_blank">
+              <img src="{{ url_for('static', filename='images/facebook.png') }}" alt="Facebook" style="width: 24px;">
+            </a>
+            <a href="https://sa.linkedin.com/company/ministry-of-human-resources-and-social-development-ksa?trk=public_profile_topcard_current_compan" target="_blank">
+              <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="LinkedIn" style="width: 24px;">
+            </a>
+            <a href="https://www.youtube.com/user/MinistryOfLabor/videos?app=desktop" target="_blank">
+              <img src="{{ url_for('static', filename='images/youtube.png') }}" alt="YouTube" style="width: 24px;">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+  // لما تحمل الصفحة، عبي الاسم إذا كان محفوظ
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedUsername = localStorage.getItem('savedUsername');
+    const checkbox = document.getElementById('remember');
+    const usernameInput = document.getElementById('username');
+
+    if (savedUsername) {
+      usernameInput.value = savedUsername;
+      checkbox.checked = true;
+    }
+
+    // عند الإرسال نحفظ أو نحذف حسب الحالة
+    document.querySelector('form').addEventListener('submit', () => {
+      if (checkbox.checked) {
+        localStorage.setItem('savedUsername', usernameInput.value);
+      } else {
+        localStorage.removeItem('savedUsername');
+      }
+    });
+  });
+  </script> 
+</body>
+</html>

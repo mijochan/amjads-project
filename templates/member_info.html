@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>معلومات العضو</title>
+  <style>
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 50px;
+      text-align: center;
+    }
+
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      max-width: 350px;
+      height: auto;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    .info-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: auto;
+      text-align: right;
+    }
+
+    .info-container p {
+      font-size: 18px;
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    .info-container p span {
+      font-weight: bold;
+      color: #009999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار الموقع">
+  </div>
+
+  <h2>معلوماتك الشخصية</h2>
+
+  <div class="info-container">
+    <p><span>الاسم الكامل:</span> {{ user['name'] }}</p>
+    <p><span>السجل المدني:</span> {{ user['national_id'] }}</p>
+    <p><span>رقم الجوال:</span> {{ user['phone'] }}</p>
+    <p>{{ user['email'] }}<span> :البريد الإلكتروني</span></p>
+
+    {% if user['role'] == 'موظف' %}
+      <p><span>التخصص:</span> {{ user['specialty'] }}</p>
+      <p><span>تاريخ المباشرة:</span> {{ user['start_date'] }}</p>
+  {% elif user['role'] == 'متدرب' %}
+  <p><span>تخصص المتدرب:</span> {{ user['intern_specialty'] }}</p>
+  <p><span>الجامعة / المعهد:</span> {{ user['university'] }}</p>
+  <p><span>تاريخ بداية التدريب:</span> {{ user['start_date'] }}</p>
+  <p><span>تاريخ نهاية التدريب:</span> {{ user['end_date'] }}</p>
+
+  {% if user['start_date'] and user['end_date'] %}
+    {% set start = user['start_date'] | todatetime('%Y-%m-%d') %}
+    {% set end = user['end_date'] | todatetime('%Y-%m-%d') %}
+    {% set training_days = (end - start).days %}
+    <p><span>عدد أيام التدريب:</span> {{ training_days }} يوم</p>
+  {% endif %}
+{% endif %}
+
+  </div>
+<form action="{{ url_for('logout') }}" method="POST" style="margin-top: 20px; text-align: center;">
+  <button type="submit" style="
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.backgroundColor='white'; this.style.color='orange'; this.style.border='1px solid orange';"
+  onmouseout="this.style.backgroundColor='orange'; this.style.color='white'; this.style.border='none';">
+    تسجيل الخروج
+  </button>
+</form>
+</body>
+</html>
